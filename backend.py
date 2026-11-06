@@ -32,7 +32,7 @@
     Открой в браузере: http://127.0.0.1:8000
 ================================================================================
 """
-
+import sqlite3
 import hashlib
 import hmac
 import logging
@@ -52,6 +52,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
+# Создаем или подключаемся к базе данных
+conn = sqlite3.connect("database.db", check_same_thread=False)
+cursor = conn.cursor()
+
+# Создаем таблицу, если её нет
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS web_users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        balance REAL DEFAULT 0,
+        total_won REAL DEFAULT 0
+    )
+""")
+conn.commit()
 # ==============================================================================
 # ⚙️ КОНФИГУРАЦИЯ СЕРВЕРА
 # ==============================================================================
