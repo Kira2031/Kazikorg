@@ -51,7 +51,13 @@ from fastapi import Cookie, Depends, FastAPI, Header, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
-
+from fastapi import FastAPI
+ 
+app = FastAPI()
+ 
+@app.get("/")
+def read_root():
+    return {"Python": "on Vercel"}
 # Создаем или подключаемся к базе данных
 conn = sqlite3.connect("database.db", check_same_thread=False)
 cursor = conn.cursor()
